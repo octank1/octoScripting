@@ -1,0 +1,21 @@
+# Secrets & Credentials
+**/config/secrets.encrypted
+**/config/config.json
+**/last-chat.json
+
+# Nur Templates committen
+!**/config/config.template.json
+
+# PowerShell
+*.ps1xml
+*.log
+
+# IDE
+.vscode/
+.idea/
+*.swp
+
+# Windows
+Thumbs.db
+Desktop.ini
+

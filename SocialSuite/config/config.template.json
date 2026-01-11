@@ -1,0 +1,26 @@
+﻿{
+    "version":  "1.0",
+    "settings":  {
+                     "general":  {
+                                     "obsidianVault":  "<Pfad zu Obsidian Vault>",
+                                     "scriptPath":  "<Pfad zu Scripten>",
+                                     "textColor": "Black",
+                                     "subtextColor": "DarkGray",
+                                     "titleColor": "DarkBlue",
+                                     "highlightColor": "DarkMagenta",
+                                     "statusColor": "DarkYellow",
+                                     "errorColor": "DarkRed",
+                                     "successColor": "DarkGreen",
+                                     "menuColor": "DarkCyan"
+                                 },
+                     "bluesky":  {
+                                     "outputPath":  "<Pfad zu Bluesky Export>",
+                                     "postExportPath":  "<Pfad zu Bluesky Post Export>",
+                                     "postExportFilename":  "bluesky-posts-export.md",
+                                     "handle":  "your-handle.bsky.social"
+                                 },
+                     "discord":  {
+                                     "outputPath":  "<Pfad zu Discord Export>"
+                                 }
+                 }
+}
