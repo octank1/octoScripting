@@ -18,7 +18,8 @@ Kleines interaktives Powershell-Script, um einen Text in HEX-ASCII-Codes oder HE
 
 Powershell-Script zur Prüfung, ob Passwörtern geleaked wurden. Dazu wird ein Passwort abgefragt oder es kann eine Text-Datei mit Passwörtern übergeben werden. Das Ergebnis kann als CSV exportiert werden.
 
-####
+#### Aufruf des Scripts
+
 `pwnd-api -PasswordFile "dateiname.txt" -ExportCSV`
 
 ### Winget-Update
@@ -26,9 +27,27 @@ Powershell-Script zur Prüfung, ob Passwörtern geleaked wurden. Dazu wird ein P
 Powershell-Script, das über winget eine Liste der zu aktualisierenden Programme anzeigt, die dann einzeln über eine Auswahl aktualisiert werden können.
 Falls eine Konsole mit erhöhten Rechten zum Update notwendig ist, wird diese automatisch gestartet.
 
-####
+#### Aufruf des Scripts
 
-`winget-updates.ps1'
+`winget-updates.ps1`
+
+### Verzeichnisstruktur erstellen
+
+Powershell-Script, mit dem man eine immer gleichartige Verzeichnisstruktur für ein Jahr anlegen kann. Falls man Daten, z.B. für die Fibu oder Krankenkassenbelege etc. in einer Struktur
+
+- Jahr
+    - Person 1
+        - Belegart 1
+        - Belegart 2
+    - Person 2
+        - Belegart 1
+        - Belegart 2
+
+oder ähnlich strukturiert hat, erzeugt dieses Script den kompletten Jahresordner oder alle fehlenden Ordner innerhalb eines Jahresorders.
+
+#### Aufruf des Scripts
+
+`create-folderstructure.ps1 -Year 2026`
 
 ---
 
