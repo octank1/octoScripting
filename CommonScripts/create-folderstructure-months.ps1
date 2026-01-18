@@ -13,7 +13,6 @@
 param(
     [Parameter(Mandatory=$false)]
     [int]$Year
-
 )
 # Windows-Pfad zum Basisverzeichnis der Dateien
 $WinPath = "C:\Daten\...\"
@@ -36,11 +35,10 @@ if (-not $BasePath -or $BasePath -eq "") {
 }
 
 # Konfiguration: Verzeichnisstruktur als Hashtable
-# Hier müssen alle Unterverzeichnisse einmalig definiert werden
 $DirectoryStructure = @(
     "Ausgangsrechnungen",
-    "Eingangsrechnungen/Bürobedarf",
-    "Eingangsrechnungen/Software",
+    "Eingangsrechnungen/{MN}/Bürobedarf",
+    "Eingangsrechnungen/{MN}/Software",
     "Kontoauszüge"
 )
 
@@ -66,21 +64,52 @@ $CreatedCount = 0
 $ExistingCount = 0
 
 foreach ($directory in $DirectoryStructure) {
-    # Pfad zusammensetzen (/ durch Plattform-spezifischen Separator ersetzen)
-    $fullPath = Join-Path -Path $RootPath -ChildPath $directory.Replace('/', [IO.Path]::DirectorySeparatorChar)
-    
-    if (Test-Path -Path $fullPath) {
-        Write-Host "  [EXISTS] $directory" -ForegroundColor Yellow
-        $ExistingCount++
+    # Prüfen, ob Monatsplatzhalter {MN} vorhanden ist
+    if ($directory -match '\{MN\}') {
+        # Für jeden Monat (01-12) einen Ordner erstellen
+        for ($month = 1; $month -le 12; $month++) {
+            $monthStr = "{0:D2}" -f $month
+            $yearMonth = "$Year-$monthStr"
+            
+            # Platzhalter durch Jahr-Monat ersetzen
+            $expandedDirectory = $directory -replace '\{MN\}', $yearMonth
+            
+            # Pfad zusammensetzen
+            $fullPath = Join-Path -Path $RootPath -ChildPath $expandedDirectory.Replace('/', [IO.Path]::DirectorySeparatorChar)
+            
+            if (Test-Path -Path $fullPath) {
+                Write-Host "  [EXISTS] $expandedDirectory" -ForegroundColor Yellow
+                $ExistingCount++
+            }
+            else {
+                try {
+                    New-Item -Path $fullPath -ItemType Directory -Force | Out-Null
+                    Write-Host "  [CREATED] $expandedDirectory" -ForegroundColor Green
+                    $CreatedCount++
+                }
+                catch {
+                    Write-Error "Fehler beim Erstellen von '$expandedDirectory': $_"
+                }
+            }
+        }
     }
     else {
-        try {
-            New-Item -Path $fullPath -ItemType Directory -Force | Out-Null
-            Write-Host "  [CREATED] $directory" -ForegroundColor Green
-            $CreatedCount++
+        # Normale Verzeichnisse ohne Platzhalter
+        $fullPath = Join-Path -Path $RootPath -ChildPath $directory.Replace('/', [IO.Path]::DirectorySeparatorChar)
+        
+        if (Test-Path -Path $fullPath) {
+            Write-Host "  [EXISTS] $directory" -ForegroundColor Yellow
+            $ExistingCount++
         }
-        catch {
-            Write-Error "Fehler beim Erstellen von '$directory': $_"
+        else {
+            try {
+                New-Item -Path $fullPath -ItemType Directory -Force | Out-Null
+                Write-Host "  [CREATED] $directory" -ForegroundColor Green
+                $CreatedCount++
+            }
+            catch {
+                Write-Error "Fehler beim Erstellen von '$directory': $_"
+            }
         }
     }
 }
